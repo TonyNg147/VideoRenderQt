@@ -1,12 +1,5 @@
 #include "VideoRender.h"
 
-template<typename T>
-void safeDel(T& ptr){
-    if (ptr){
-        delete ptr;
-        ptr = nullptr; 
-    }
-}
 
 VideoRender::VideoRender(){
     m_media = new QMediaPlayer();
@@ -18,20 +11,19 @@ VideoRender::VideoRender(){
     m_media->play();
 }
 VideoRender::~VideoRender(){
-    safeDel(m_painter);
-    safeDel(m_videoSink);
-    safeDel(m_media);
+    delete m_painter;
+    delete m_videoSink;
+    delete m_media;
 }
 void VideoRender::onFrameChanged(const QVideoFrame& frame){
-    // if the content of the frame changes, we will re-draw it
-    if (m_frame = frame) return;
+    // if the content of the frame changes, we copy the frame and let the next loop re-draws it
+    if (m_frame == frame) return;
     m_frame = frame;
-    paint(m_painter);
 }
 
 void VideoRender::paint(QPainter *painter){
     // Draw the frame with the width height given
     painter->drawImage(QRect(0,0,640,480),m_frame.toImage() );
     // Call update to re-render the screen
-    update(QRect(0,0,640,480));
+    update();
 }

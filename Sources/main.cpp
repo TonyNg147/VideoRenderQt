@@ -1,6 +1,6 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
-#include "VideoRender/VideoSink.h"
+#include "VideoRender/VideoRender.h"
 int main(int argc, char** argv){
     QGuiApplication app(argc,argv);
     qmlRegisterType<VideoRender>("VideoRender",1,0,"VideoRender");
